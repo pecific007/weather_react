@@ -1,121 +1,82 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { useEffect, useState } from 'react'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+type WeatherProps = {
+  city: string;
+};
+
+function Weather({ city }: WeatherProps) {
+  const [weather, setWeather] = useState(null)
+  const apiKey = import.meta.env.VITE_API_KEY;
+
+  useEffect(() => {
+    if (!city) return;
+    fetch(`http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=no`)
+    .then((res) => res.json())
+    .then((data) => { setWeather(data) })
+    .catch(err => console.error(err))
+  }, [city])
+
+if (!weather) {
+    return (
+    <h3>Enter name of city to get data</h3>
+    )
+}
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+  <>
+    <h1>Weather Data:</h1>
+    <div className="hero-border">
+        <div className="condition">
+          <img src={weather.current.condition.icon} />
+          <h2>{weather.current.condition.text}</h2>
         </div>
         <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
+          <p><b>Name:</b><span>{weather.location.name}</span></p>
+          <p><b>Country:</b><span>{weather.location.country}</span></p>
+          <p><b>Time(iso):</b><span>{weather.location.localtime}</span></p>
+          <p><b>Temp C:</b><span>{weather.current.temp_c}</span></p>
+          <p><b>Temp F:</b><span>{weather.current.temp_f}</span></p>
+          <p><b>Humidity:</b><span>{weather.current.humidity}</span></p>
+          <p><b>Uv:</b><span>{weather.current.uv}</span></p>
         </div>
-        <button
-          type="button"
+    </div>
+    {/* <pre> */}
+    {/*     {JSON.stringify(weather, null, 2)} */}
+    {/* </pre> */}
+  </>
+  )
+}
+
+function App() {
+  const [inputValue, setInput] = useState("")
+  const [city, setCity] = useState("")
+
+  function handleInput() {
+    setCity(inputValue.toLowerCase());
+  }
+
+  return (
+    <section id="center">
+      <div className="input-field">
+        <input
+          autofocus
+          type="text"
+          value={inputValue}
           className="counter"
-          onClick={() => setCount((count) => count + 1)}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="City name"
+        />
+        <button onClick={handleInput}
+          className="counter"
         >
-          Count is {count}
+          Search
         </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      </div>
+      <div>
+        < Weather city={city} />
+      </div>
+    </section>
   )
 }
 
