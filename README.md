@@ -9,3 +9,5 @@ Weather React is a simple weather WebApp that displays weather data from the `<i
 ### Weather data:
 ![Weather data](https://github.com/pecific007/weather_react/blob/main/screenshots/screen-02.png?raw=true)
 ![Weather data](https://github.com/pecific007/weather_react/blob/main/screenshots/screen-03.png?raw=true)
+### Error:
+![Error occurred](https://github.com/pecific007/weather_react/blob/main/screenshots/screen-04.png?raw=true)
