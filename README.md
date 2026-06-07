@@ -5,6 +5,7 @@ Weather React is a simple weather WebApp that displays weather data from the `<i
 - You will need the API key.
 
 ### Landing page:
-![Alt text](https://github.com/pecific007/weather_react/blob/main/screen-01.png?raw=true)
-![Alt text](https://github.com/pecific007/weather_react/blob/main/screen-02.png?raw=true)
-![Alt text](https://github.com/pecific007/weather_react/blob/main/screen-03.png?raw=true)
+![Landing page](https://github.com/pecific007/weather_react/blob/main/screenshots/screen-01.png?raw=true)
+### Weather data:
+![Weather data](https://github.com/pecific007/weather_react/blob/main/screenshots/screen-02.png?raw=true)
+![Weather data](https://github.com/pecific007/weather_react/blob/main/screenshots/screen-03.png?raw=true)
