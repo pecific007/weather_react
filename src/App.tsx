@@ -47,13 +47,11 @@ function Weather({ city }: WeatherProps) {
 
     if (weather.error) {
         return (
-            <>
-                <div className="hero-border">
-                    <h1>An error occurred:</h1>
-                    <p>{weather.error.message}</p>
-                    <p>CODE: {weather.error.code}</p>
-                </div>
-            </>
+            <div className="hero-border">
+                <h1>An error occurred:</h1>
+                <p>{weather.error.message}</p>
+                <p>CODE: {weather.error.code}</p>
+            </div>
         )
     }
     return (
@@ -81,6 +79,7 @@ function Weather({ city }: WeatherProps) {
     )
 }
 
+
 function App() {
     const [inputValue, setInput] = useState("")
     const [city, setCity] = useState("")
@@ -91,10 +90,10 @@ function App() {
 
     return (
         <section id="center">
-            <div className="input-field">
+            <form className="input-field" onSubmit={(event) => {event.preventDefault()}}>
                 <input
                     autoFocus
-                    type="text"
+                    type="search"
                     value={inputValue}
                     className="counter"
                     onChange={(e) => setInput(e.target.value)}
@@ -105,7 +104,7 @@ function App() {
                 >
                     Search
                 </button>
-            </div>
+            </form>
             <div>
                 < Weather city={city} />
             </div>
