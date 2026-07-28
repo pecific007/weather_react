@@ -5,17 +5,39 @@ type WeatherProps = {
     city: string;
 };
 
+type WeatherData = {
+    location: {
+        name: string;
+        country: string;
+        localtime: string;
+    };
+    current: {
+        temp_c: number;
+        temp_f: number;
+        humidity: number;
+        uv: number;
+        condition: {
+            text: string;
+            icon: string;
+        };
+    };
+    error?: {
+        message: string;
+        code: number;
+    };
+}
+
 function Weather({ city }: WeatherProps) {
-    const [weather, setWeather] = useState(null)
+    const [weather, setWeather] = useState<WeatherData | null>(null)
     const apiKey = import.meta.env.VITE_API_KEY;
 
     useEffect(() => {
         if (!city) return;
-        fetch(`http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=no`)
+        fetch(`https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=no`)
             .then((res) => res.json())
             .then((data) => { setWeather(data) })
             .catch(err => console.error(err))
-    }, [city])
+    }, [city, apiKey])
 
     if (!weather) {
         return (
