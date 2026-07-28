@@ -2,7 +2,7 @@
 
 Weather React is a simple weather WebApp that displays weather data from the `<input>` and pressing the `Search` button will show the weather data. Like the `weather_cli`, this will send request to https://www.weatherapi.com, execpt this time it's an `https` request.
 
-- You will need the API key.
+- See on github pages: https://pecific007.github.io/weather_react
 
 ### Landing page:
 ![Landing page](https://github.com/pecific007/weather_react/blob/main/screenshots/screen-01.png?raw=true)
