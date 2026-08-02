@@ -1,115 +1,40 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import './App.css'
-
-type WeatherProps = {
-    city: string;
-};
-
-type WeatherData = {
-    location: {
-        name: string;
-        country: string;
-        localtime: string;
-    };
-    current: {
-        temp_c: number;
-        temp_f: number;
-        humidity: number;
-        uv: number;
-        condition: {
-            text: string;
-            icon: string;
-        };
-    };
-    error?: {
-        message: string;
-        code: number;
-    };
-}
-
-function Weather({ city }: WeatherProps) {
-    const [weather, setWeather] = useState<WeatherData | null>(null)
-    const apiKey = import.meta.env.VITE_API_KEY;
-
-    useEffect(() => {
-        if (!city) return;
-        fetch(`https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&aqi=no`)
-            .then((res) => res.json())
-            .then((data) => { setWeather(data) })
-            .catch(err => console.error(err))
-    }, [city, apiKey])
-
-    if (!weather) {
-        return (
-            <h3>Enter name of city to get data</h3>
-        )
-    }
-
-    if (weather.error) {
-        return (
-            <div className="hero-border">
-                <h1>An error occurred:</h1>
-                <p>{weather.error.message}</p>
-                <p>CODE: {weather.error.code}</p>
-            </div>
-        )
-    }
-    return (
-        <>
-            <h1>Weather Data:</h1>
-            <div className="hero-border">
-                <div className="condition">
-                    <img src={weather.current.condition.icon} />
-                    <h2>{weather.current.condition.text}</h2>
-                </div>
-                <div>
-                    <p><b>Name:</b><span>{weather.location.name}</span></p>
-                    <p><b>Country:</b><span>{weather.location.country}</span></p>
-                    <p><b>Time(iso):</b><span>{weather.location.localtime}</span></p>
-                    <p><b>Temp C:</b><span>{weather.current.temp_c}</span></p>
-                    <p><b>Temp F:</b><span>{weather.current.temp_f}</span></p>
-                    <p><b>Humidity:</b><span>{weather.current.humidity}</span></p>
-                    <p><b>Uv:</b><span>{weather.current.uv}</span></p>
-                </div>
-            </div>
-            {/* <pre> */}
-            {/*     {JSON.stringify(weather, null, 2)} */}
-            {/* </pre> */}
-        </>
-    )
-}
+import Weather from './weatherCard'
 
 
 function App() {
-    const [inputValue, setInput] = useState("")
-    const [city, setCity] = useState("")
+  const [inputValue, setInput] = useState("")
+  const [city, setCity] = useState("")
 
-    function handleInput() {
-        setCity(inputValue.toLowerCase());
-    }
+  function handleInput() {
+    const trimmed = inputValue.trim();
+    if (trimmed) setCity(inputValue.toLowerCase());
+  }
 
-    return (
-        <section id="center">
-            <form className="input-field" onSubmit={(event) => {event.preventDefault()}}>
-                <input
-                    autoFocus
-                    type="search"
-                    value={inputValue}
-                    className="counter"
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="City name"
-                />
-                <button onClick={handleInput}
-                    className="counter"
-                >
-                    Search
-                </button>
-            </form>
-            <div>
-                < Weather city={city} />
-            </div>
-        </section>
-    )
+  return (
+    <section id="center">
+      <form className="input-field" onSubmit={(e) => {e.preventDefault()}}>
+        <input
+        autoFocus
+        type="search"
+        value={inputValue}
+        className="counter"
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="City name"
+        />
+        <button onClick={handleInput}
+          type="submit"
+          className="counter"
+        >
+          Search
+        </button>
+      </form>
+      <div>
+        < Weather city={city} />
+      </div>
+    </section>
+  )
 }
 
 export default App
