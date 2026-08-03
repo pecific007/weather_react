@@ -26,7 +26,7 @@ type WeatherData = {
   };
 }
 
-export default function Weather({ city }: WeatherProps) {
+export function Weather({ city }: WeatherProps) {
   const [weather, setWeather] = useState<WeatherData | null>(null)
   const apiKey = import.meta.env.VITE_API_KEY;
 
@@ -56,7 +56,7 @@ export default function Weather({ city }: WeatherProps) {
     )
   }
   return (
-    <>
+    <div id="weatherDataCard">
       <h1>Weather Data:</h1>
       <div className="hero-border">
         <div className="condition">
@@ -73,6 +73,6 @@ export default function Weather({ city }: WeatherProps) {
           <p><b>Uv:</b><span>{weather.current.uv}</span></p>
         </div>
       </div>
-    </>
+    </div>
   )
 }

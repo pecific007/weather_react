@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import Weather from './weatherCard'
+import { Weather } from './weatherCard'
 
 
 function App() {
@@ -30,9 +30,7 @@ function App() {
           Search
         </button>
       </form>
-      <div>
-        < Weather city={city} />
-      </div>
+      < Weather city={city} />
     </section>
   )
 }
