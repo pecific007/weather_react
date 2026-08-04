@@ -1,7 +1,4 @@
-export interface WeatherInfo {
-  text: string;
-  icon: string;
-}
+import { type WeatherInfo } from "./types";
 
 type WeatherCodes =
   | 0 | 1 | 2 | 3
@@ -38,7 +35,7 @@ export const WeatherCodeMap: Record<WeatherCodes, WeatherInfo> = {
   82: { text: "Violent rain showers", icon: "⛈️" },
   85: { text: "Slight snow showers", icon: "🌨️" },
   86: { text: "Heavy snow showers", icon: "❄️" },
-  95: { text: "Thunderstorm (slight or moderate)", icon: "⛈️" },
+  95: { text: "Thunderstorm", icon: "⛈️" },
   96: { text: "Thunderstorm with slight hail", icon: "⛈️" },
   99: { text: "Thunderstorm with heavy hail", icon: "⛈️" },
 };

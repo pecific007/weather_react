@@ -8,8 +8,13 @@ export interface GeocodingLocation {
 }
 
 export interface GeocodingResponse {
-  result?: GeocodingLocation[];
+  results?: GeocodingLocation[];
   generationtime_ms: number;
+}
+
+export interface WeatherInfo {
+  text: string;
+  icon: string;
 }
 
 interface OpenMeteoCurrentUnits {
@@ -40,4 +45,15 @@ export interface OpenMeteoWeather {
   timezone_abbreviation: string;
   current_units: OpenMeteoCurrentUnits;
   current: OpenMeteoCurrent;
+}
+
+export interface Display {
+  name: string;
+  country: string;
+  time: string;
+  tempC: string;
+  humidity: string;
+  uv: number;
+  windspeed: string;
+  info: WeatherInfo;
 }

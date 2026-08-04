@@ -1,15 +1,15 @@
-import type { GeocodingLocation, GeocodingResponse, OpenMeteoWeather } from './types';
-import { WeatherCodeMap, type WeatherInfo } from './weatherCodeMap'
+import type { GeocodingLocation, GeocodingResponse, WeatherInfo, OpenMeteoWeather, Display } from './types';
+import { WeatherCodeMap } from './weatherCodeMap'
 
 async function fetchGeocodeData(city: string): Promise<GeocodingLocation> {
-  if (!city || city.length == 0) return;
-  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`
+  if (!city.trim()) throw new Error("City is required");
+  const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`
   const res = await fetch(url);
   if (!res.ok) throw new Error(`Geocoding api error: ${res.status}`)
   const data = (await res.json()) as GeocodingResponse;
-  if (!data.result || data.result.length == 0)
+  if (!data.results || data.results.length == 0)
     throw new Error(`No location found for ${city}`);
-  return data.result[0];
+  return data.results[0];
 }
 
 async function fetchWeatherData(lat: number, lon: number): Promise<OpenMeteoWeather> {
@@ -33,21 +33,11 @@ function getWeatherInfo(code: number): WeatherInfo {
   return WeatherCodeMap[code] ?? default_value;
 }
 
-export interface Display {
-  name: string;
-  country: string;
-  time: string;
-  tempC: string;
-  humidity: string;
-  uv: number;
-  windspeed: string;
-  info: WeatherInfo;
-}
-
 export default async function gatherData(city: string): Promise<Display> {
   const geocode = await fetchGeocodeData(city);
   const data = await fetchWeatherData(geocode.latitude, geocode.longitude);
   const info = getWeatherInfo(data.current.weather_code);
+
 
   const display: Display = {
     name: geocode.name,

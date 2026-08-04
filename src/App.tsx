@@ -1,37 +1,62 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import './App.css'
+import gatherData from './fetchData'
+import { type Display } from './types'
 import { Weather } from './weatherCard'
 
+function Form() {
+  const [inputVal, setInputVal] = useState("");
+  const [display, setDisplay] = useState<Display | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!inputVal.trim()) return;
 
-function App() {
-  const [inputValue, setInput] = useState("")
-  const [city, setCity] = useState("")
+    setError(null);
+    setLoading(true);
 
-  function handleInput() {
-    const trimmed = inputValue.trim();
-    if (trimmed) setCity(inputValue.toLowerCase());
+    try {
+      const res = await gatherData(inputVal);
+      setDisplay(res);
+    } catch(err) {
+      setDisplay(null);
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Unknown error occured.");
+      }
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <section id="center">
-      <form className="input-field" onSubmit={(e) => {e.preventDefault()}}>
+      <form className="input-field" onSubmit={handleSubmit}>
         <input
-        autoFocus
-        type="search"
-        value={inputValue}
-        className="counter"
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="City name"
-        />
-        <button onClick={handleInput}
-          type="submit"
+          autoFocus
+          type="search"
           className="counter"
-        >
-          Search
-        </button>
+          placeholder='City name'
+          value={inputVal}
+          onChange={(e) => setInputVal(e.target.value)}
+        />
+        <button type="submit" className="counter">Go!</button>
       </form>
-      < Weather city={city} />
+      { loading && <p>Loading...</p> }
+      { !loading && !display && !error && <p>Enter the name of a city to get weather</p>}
+      { error && <p>{error}</p> }
+      { display && <Weather data={display} /> }
     </section>
+  )
+}
+
+function App() {
+  return (
+    <>
+      <Form />
+    </>
   )
 }
 
