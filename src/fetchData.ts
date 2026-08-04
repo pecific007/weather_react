@@ -30,7 +30,8 @@ async function fetchWeatherData(lat: number, lon: number): Promise<OpenMeteoWeat
 
 function getWeatherInfo(code: number): WeatherInfo {
   const default_value: WeatherInfo = { text: "Unknown", icon: "❓" };
-  return WeatherCodeMap[code] ?? default_value;
+  // return WeatherCodeMap[code] ?? default_value;
+  return (WeatherCodeMap as Record<number, WeatherInfo>)[code] ?? default_value;
 }
 
 export default async function gatherData(city: string): Promise<Display> {
